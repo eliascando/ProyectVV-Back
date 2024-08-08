@@ -115,7 +115,8 @@ namespace MatriculasBack.Controllers
 
         // POST api/usuario/registrar   --Para administrador
         [HttpPost("registrar")]
-        [Authorize(Policy = "AdminOnly")]
+        [AllowAnonymous]
+        //[Authorize(Policy = "AdminOnly")]
         public ApiResponse<NewUserDTO> Post([FromBody] UsuarioRegistroDTO newUser)
         {
             try

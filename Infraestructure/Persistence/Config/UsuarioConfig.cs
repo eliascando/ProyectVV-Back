@@ -28,6 +28,19 @@ namespace Infraestructure.Persistence.Config
 
             builder.HasKey(e => e.Id);
             builder.HasIndex(e => e.Email).IsUnique();
+
+            builder.HasData(
+                new Usuario { 
+                    Id = 1, 
+                    NumberIdentification = "0000", 
+                    Password = "$2a$11$RiVVUuif7kw9we7wayBzDOdSikGRzjmus0xMSuwtraRNH1.zNuiha", 
+                    Name = "admin", 
+                    LastName="", 
+                    Email = "admin@admin.com",
+                    RoleId = 4,
+                    Status = true
+                }
+            );
         }
     }
 }
