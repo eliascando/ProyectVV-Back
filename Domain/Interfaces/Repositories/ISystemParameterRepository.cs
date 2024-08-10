@@ -4,6 +4,7 @@
     {
         List<T> GetAll();  
         T GetById(long id);
+        TDetails GetByDetailId(long id);
         T RegisterNew(T entity);
     }
 }

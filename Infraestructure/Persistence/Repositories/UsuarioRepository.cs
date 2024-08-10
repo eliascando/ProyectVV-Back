@@ -77,12 +77,32 @@ namespace Infraestructure.Persistence.Repositories
         public Usuario Update(long id, Usuario entity)
         {
             var u = _context.Usuarios.Where(u => u.Id == id && u.Status == true).FirstOrDefault() ?? throw new Exception("Usuario no encontrado!");
-            
-            u.Email = (entity.Email == String.Empty || entity.Phone == null) ? u.Email : entity.Email;
-            u.Phone = (entity.Phone == String.Empty || entity.Phone == null) ? u.Phone : entity.Phone;
-            u.Adress = (entity.Adress == String.Empty || entity.Adress == null) ? u.Adress : entity.Adress;
-            u.Password = (entity.Password == String.Empty || entity.Password == null) ? u.Password : entity.Password;
-            u.RoleId = (entity.RoleId == null || entity.RoleId == 0) ? u.RoleId : entity.RoleId;
+
+            // Actualizar campos solo si los valores no son vacíos o nulos
+            if (!string.IsNullOrEmpty(entity.Email))
+            {
+                u.Email = entity.Email;
+            }
+
+            if (!string.IsNullOrEmpty(entity.Phone))
+            {
+                u.Phone = entity.Phone;
+            }
+
+            if (!string.IsNullOrEmpty(entity.Adress))
+            {
+                u.Adress = entity.Adress;
+            }
+
+            if (!string.IsNullOrEmpty(entity.Password))
+            {
+                u.Password = entity.Password;
+            }
+
+            if (entity.RoleId != u.RoleId)
+            {
+                u.RoleId = entity.RoleId;
+            }
 
             _context.Entry(u).State = EntityState.Modified;
             _context.SaveChanges();

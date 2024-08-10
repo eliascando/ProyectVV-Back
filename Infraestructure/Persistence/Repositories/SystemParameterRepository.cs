@@ -19,6 +19,11 @@ namespace Infraestructure.Persistence.Repositories
             return _context.SystemParameters.Include(sp => sp.Details).ToList();
         }
 
+        public SystemParameterDetails GetByDetailId(long id)
+        {
+            return _context.SystemParametersDetails.Where(spd => spd.Id == id).FirstOrDefault() ?? throw new Exception("No se encontró detalle!");
+        }
+
         public SystemParameter GetById(long id)
         {
             return _context.SystemParameters.Where(sp => sp.Id == id).Include(sp => sp.Details).FirstOrDefault() ?? throw new Exception("No se encontró parametro");

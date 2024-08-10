@@ -9,5 +9,6 @@ namespace Domain.Interfaces.Services
         List<T> ObtenerTodosPorCursoId(long cursoId);
         List<T> ObtenerDocentes();
         List<T> ObtenerEstudiantes();
+        List<T> ObtenerTodos();
     }
 }

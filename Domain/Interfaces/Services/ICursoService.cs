@@ -11,5 +11,6 @@ namespace Domain.Interfaces.Services
     {
         List<T> ObtenerTodos();
         List<TDTO> ObtenerTodosDto();
+        List<TDTO> ObtenerCursosPorDocente(long id);
     }
 }

@@ -10,13 +10,24 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class MatriculaService : IMatriculaService<Matricula, NewMatriculaDTO, Matricula>
+    public class MatriculaService : IMatriculaService<Matricula, NewMatriculaDTO, Matricula, MatriculaDTO>
     {
         private readonly IMatriculaRepository<Matricula> _repo;
+        private readonly IUsuarioRepository<Usuario> _userRepo;
+        private readonly ISystemParameterRepository<SystemParameter, SystemParameterDetails> _paramRepo;
+        private readonly ICursoRepository<Curso, CursoDTO> _cursoRepo;
 
-        public MatriculaService(IMatriculaRepository<Matricula> repo)
+        public MatriculaService(
+            IMatriculaRepository<Matricula> repo,
+            IUsuarioRepository<Usuario> userRepo,
+            ISystemParameterRepository<SystemParameter, SystemParameterDetails> paramRepo,
+            ICursoRepository<Curso, CursoDTO> cursoRepo
+        )
         {
             _repo = repo;
+            _userRepo = userRepo;
+            _paramRepo = paramRepo;
+            _cursoRepo = cursoRepo;
         }
 
         public bool Inactivate(long id)
@@ -46,6 +57,20 @@ namespace Application.Services
         public List<Matricula> ObtenerTodos()
         {
             return _repo.GetAll();
+        }
+
+        public List<MatriculaDTO> ObtenerTodosDto()
+        {
+            return _repo.GetAll().Select(o => new MatriculaDTO
+            {
+                Id = o.Id,
+                UserName = $"{_userRepo.GetById(o.UserId).Name} {_userRepo.GetById(o.UserId).LastName}",
+                TypeName = _paramRepo.GetByDetailId(o.TypeId).Description,
+                CourseDescription = $"{_cursoRepo.GetById(o.CourseId).Description} " +
+                                    $"| {_cursoRepo.GetById(o.CourseId).Parallel} ",
+                Cycle = _paramRepo.GetByDetailId(_cursoRepo.GetById(o.CourseId).CycleId).Description,
+                CreationTime = o.CreationTime
+            }).ToList();
         }
     }
 }

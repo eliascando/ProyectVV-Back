@@ -10,5 +10,6 @@
         public string Phone { get; set; }
         public string Adress { get; set; }
         public long RoleId { get; set; }
+        public string RoleName {  get; set; }
     }
 }

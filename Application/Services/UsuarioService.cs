@@ -16,10 +16,12 @@ namespace Application.Services
     {
 
         private readonly IUsuarioRepository<Usuario> _userRepo;
+        private readonly ISystemParameterRepository<SystemParameter, SystemParameterDetails> _repoSp;
 
-        public UsuarioService(IUsuarioRepository<Usuario> repo)
+        public UsuarioService(IUsuarioRepository<Usuario> repo, ISystemParameterRepository<SystemParameter, SystemParameterDetails> repoSp)
         {
             _userRepo = repo;
+            _repoSp = repoSp;
         }
 
         public NewUserDTO Register(UsuarioRegistroDTO register)
@@ -44,7 +46,8 @@ namespace Application.Services
                 Phone = user.Phone,
                 Adress = user.Adress,
                 Email = user.Email,
-                RoleId = user.RoleId
+                RoleId = user.RoleId,
+                RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == user.RoleId).FirstOrDefault().Value ?? ""
             };
         }
 
@@ -55,7 +58,7 @@ namespace Application.Services
             updUser.Email = update.Email;
             updUser.Phone = update.Phone;
             updUser.Adress = update.Adress;
-            updUser.Password = update.Password;
+            updUser.Password = BCrypt.Net.BCrypt.HashPassword(update.Password);
             updUser.RoleId = update.RoleId;
 
             var user = _userRepo.Update(id, updUser);
@@ -69,7 +72,8 @@ namespace Application.Services
                 Email = user.Email,
                 Phone = user.Phone,
                 Adress = user.Adress,
-                RoleId = user.RoleId
+                RoleId = user.RoleId,
+                RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == user.RoleId).FirstOrDefault().Value ?? ""
             };
         }
 
@@ -80,7 +84,7 @@ namespace Application.Services
 
         public List<NewUserDTO> ObtenerEstudiantesPorCurso(long cursoId)
         {
-           long DOCENTE_TYPE_ID = 9;
+           long DOCENTE_TYPE_ID = 10;
            return _userRepo
                 .ObtenerPorCursoId(cursoId, DOCENTE_TYPE_ID)
                 .Select(u => new NewUserDTO()
@@ -92,7 +96,8 @@ namespace Application.Services
                     Email = u.Email,
                     Phone = u.Phone,
                     Adress = u.Adress,
-                    RoleId = u.RoleId
+                    RoleId = u.RoleId,
+                    RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == u.RoleId).FirstOrDefault().Value ?? ""
                 }).ToList();
         }
 
@@ -110,7 +115,8 @@ namespace Application.Services
                      Email = u.Email,
                      Phone= u.Phone,
                      Adress = u.Adress,
-                     RoleId = u.RoleId
+                     RoleId = u.RoleId,
+                     RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == u.RoleId).FirstOrDefault().Value ?? ""
                  }).ToList();
         }
 
@@ -127,7 +133,8 @@ namespace Application.Services
                      Email = u.Email,
                      Phone= u.Phone,
                      Adress = u.Adress,
-                     RoleId = u.RoleId
+                     RoleId = u.RoleId,
+                     RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == u.RoleId).FirstOrDefault().Value ?? ""
                  }).ToList();
         }
 
@@ -145,7 +152,8 @@ namespace Application.Services
                      Email = u.Email,
                      Phone= u.Phone,
                      Adress = u.Adress,
-                     RoleId = u.RoleId
+                     RoleId = u.RoleId,
+                     RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == u.RoleId).FirstOrDefault().Value ?? ""
                  }).ToList();
         }
 
@@ -163,7 +171,26 @@ namespace Application.Services
                      Email = u.Email,
                      Phone= u.Phone,
                      Adress = u.Adress,
-                     RoleId = u.RoleId
+                     RoleId = u.RoleId,
+                     RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == u.RoleId).FirstOrDefault().Value ?? ""
+                 }).ToList();
+        }
+
+        public List<NewUserDTO> ObtenerTodos()
+        {
+            return _userRepo
+                 .GetAll()
+                 .Select(u => new NewUserDTO()
+                 {
+                     Id = u.Id,
+                     NumberIdentification = u.NumberIdentification,
+                     Name = u.Name,
+                     LastName = u.LastName,
+                     Email = u.Email,
+                     Phone = u.Phone,
+                     Adress = u.Adress,
+                     RoleId = u.RoleId,
+                     RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == u.RoleId).FirstOrDefault().Value ?? ""
                  }).ToList();
         }
     }

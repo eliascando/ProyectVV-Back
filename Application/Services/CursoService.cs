@@ -62,5 +62,10 @@ namespace Application.Services
         {
             return _courseRepo.ObtenerCursosDto();
         }
+
+        public List<CursoDTO> ObtenerCursosPorDocente(long id)
+        {
+            return _courseRepo.ObtenerCursosPorDocente(id);
+        }
     }
 }

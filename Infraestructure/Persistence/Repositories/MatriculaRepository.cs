@@ -45,6 +45,32 @@ namespace Infraestructure.Persistence.Repositories
 
         public Matricula Insert(Matricula entity)
         {
+            // validacion docente
+            long DOCENTE_MAT_ID = 9;
+            long ESTUD_MAT_ID = 10;
+
+            var valDoc = _context.Matriculas.Where(
+                x => x.UserId == entity.UserId 
+                && x.CourseId == entity.CourseId
+                && x.TypeId == DOCENTE_MAT_ID
+            ).ToList();
+
+            if (valDoc.Any())
+            {
+                throw new Exception("Ya existe un docente registrado para este curso!");
+            }
+
+            var valEst = _context.Matriculas.Where(
+                x => x.UserId == entity.UserId
+                && x.CourseId == entity.CourseId
+                && x.TypeId == ESTUD_MAT_ID
+            ).ToList();
+
+            if (valEst.Any())
+            {
+                throw new Exception("Ya existe estudiante registrado para este curso!");
+            }
+
             _context.Matriculas.Add(entity);
             _context.SaveChanges();
             return entity;

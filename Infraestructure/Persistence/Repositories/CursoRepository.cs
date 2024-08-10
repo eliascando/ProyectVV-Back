@@ -87,5 +87,36 @@ namespace Infraestructure.Persistence.Repositories
 
             return cursos;
         }
+
+        public List<CursoDTO> ObtenerCursosPorDocente(long id)
+        {
+            // matricula tipos
+            long MATRICULA_DOCENTE_ID = 9;
+            long MATRICULA_ESTUDIANTE_ID = 10;
+
+            var matriculas = _context.Matriculas.Where(
+                                  x => x.UserId == id
+                                  && x.Status == true
+                                  && x.TypeId == MATRICULA_DOCENTE_ID
+                             ).Select(x => x.CourseId).ToList() ?? throw new Exception("No se encontraron matriculas!");
+
+            var cursos = _context.Cursos.Where(
+                        c => c.Status && matriculas.Contains(c.Id)
+                    ).Select(
+                    c => new CursoDTO
+                    {
+                        Cycle = _context.SystemParametersDetails.Where(sp => sp.Id == c.CycleId).Select(c => c.Description).FirstOrDefault() ?? "",
+                        Hours = c.Hours,
+                        Description = c.Description,
+                        Id = c.Id,
+                        Status = c.Status,
+                        Parallel = c.Parallel,
+                        Price = c.Price,
+                        StudentsRegistered = _context.Matriculas.Where(m => (m.CourseId == c.Id) && m.Status && m.TypeId == MATRICULA_ESTUDIANTE_ID).Count()
+                    }
+                ).ToList();
+
+            return cursos;
+        }
     }
 }
