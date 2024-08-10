@@ -30,7 +30,7 @@ namespace MatriculasBack.Config
             services.AddScoped<IUsuarioService<NewUserDTO, UsuarioRegistroDTO, UpdateUser>, UsuarioService>();
             services.AddScoped<IAuthService<Usuario, LoginDTO, LoginResultDTO>, AuthService>();
             services.AddScoped<ICursoService<Curso, NewCursoDTO, UpdateCursoDTO, CursoDTO>, CursoService>();
-            services.AddScoped<IMatriculaService<Matricula, NewMatriculaDTO, Matricula>, MatriculaService>();
+            services.AddScoped<IMatriculaService<Matricula, NewMatriculaDTO, Matricula, MatriculaDTO>, MatriculaService>();
             services.AddScoped<ISystemParameterService<SystemParameter, SystemParameterDetails>, SystemParameterService>();
 
             // add repos

@@ -39,9 +39,25 @@ namespace MatriculasBack.Controllers
             }
         }
 
+        // GET api/cursos/docente/{id}
+        [HttpGet("/api/cursos/docente/{id}")]
+        [Authorize(Policy = "DocenteOnly")]
+        public ApiResponse<List<CursoDTO>> GetAllByDocenteDto(long id)
+        {
+            try
+            {
+                var list = _cursoServ.ObtenerCursosPorDocente(id);
+
+                return ApiResponse<List<CursoDTO>>.SuccessResponse(list);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<List<CursoDTO>>.ErrorResponse(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         // GET api/curso/todos
         [HttpGet("/api/cursos")]
-        //[Authorize(Policy = "SecretaryOnly")]
         [Authorize(Policy = "SecretaryOnly")]
         public ApiResponse<List<CursoDTO>> GetAllDto()
         {

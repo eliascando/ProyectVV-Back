@@ -19,6 +19,24 @@ namespace MatriculasBack.Controllers
             _usuarioServ = service;
         }
 
+        [HttpGet("todos")]
+        [Authorize(Policy = "AdminOnly")]
+        public ApiResponse<List<NewUserDTO>> GetAll()
+        {
+            try
+            {
+                var user = _usuarioServ.ObtenerTodos();
+
+                if (user == null) return ApiResponse<List<NewUserDTO>>.ErrorResponse("No se pudo obtener", HttpStatusCode.Conflict);
+
+                return ApiResponse<List<NewUserDTO>>.SuccessResponse(user, "Registrado exitosamente!");
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<List<NewUserDTO>>.ErrorResponse(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet("/api/docentes")]
         [Authorize(Policy = "SecretaryOnly")]
         public ApiResponse<List<NewUserDTO>> GetDocentes()

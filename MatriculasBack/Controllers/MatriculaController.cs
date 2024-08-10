@@ -23,17 +23,17 @@ namespace MatriculasBack.Controllers
         // POST api/matricula/docente
         [HttpGet("todos")]
         [Authorize(Policy = "SecretaryOnly")]
-        public ApiResponse<List<Matricula>> GetAll()
+        public ApiResponse<List<MatriculaDTO>> GetAll()
         {
             try
             {
-                var list = _matrServ.ObtenerTodos();
+                var list = _matrServ.ObtenerTodosDto();
 
-                return ApiResponse<List<Matricula>>.SuccessResponse(list);
+                return ApiResponse<List<MatriculaDTO>>.SuccessResponse(list);
             }
             catch (Exception ex)
             {
-                return ApiResponse<List<Matricula>>.ErrorResponse(ex.Message, HttpStatusCode.InternalServerError);
+                return ApiResponse<List<MatriculaDTO>>.ErrorResponse(ex.Message, HttpStatusCode.InternalServerError);
             }
         }
 
