@@ -52,5 +52,21 @@ namespace MatriculasBack.Controllers
                 return ApiResponse<SystemParameter>.ErrorResponse(ex.Message, HttpStatusCode.InternalServerError);
             }
         }
+
+        //
+        [HttpGet("/api/calificacion/dropdowns/{idEstudiante}/{idCurso}")]
+        public ApiResponse<List<SystemParameter>> GetByIdStudentAnCourse(long idEstudiante, long idCurso)
+        {
+            try
+            {
+                var sp = _paramServ.ObtenerDropDownsPorEstudiante(idEstudiante, idCurso);
+
+                return ApiResponse<List<SystemParameter>>.SuccessResponse(sp);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<List<SystemParameter>>.ErrorResponse(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }

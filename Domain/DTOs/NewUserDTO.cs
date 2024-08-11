@@ -11,5 +11,7 @@
         public string Adress { get; set; }
         public long RoleId { get; set; }
         public string RoleName {  get; set; }
+        public string ? StatusMatricula { get; set; }
+        public long? MatriculaId { get; set; }
     }
 }

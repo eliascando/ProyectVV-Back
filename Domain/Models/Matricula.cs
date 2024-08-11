@@ -14,5 +14,6 @@ namespace Domain.Models
         public long TypeId { get; set; }
         public DateTime CreationTime { get; set; }
         public bool Status {  get; set; }
+        public string ? StatusApprove { get; set; }
     }
 }

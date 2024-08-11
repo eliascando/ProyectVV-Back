@@ -17,11 +17,17 @@ namespace Application.Services
 
         private readonly IUsuarioRepository<Usuario> _userRepo;
         private readonly ISystemParameterRepository<SystemParameter, SystemParameterDetails> _repoSp;
+        private readonly IMatriculaRepository<Matricula> _repoM;
 
-        public UsuarioService(IUsuarioRepository<Usuario> repo, ISystemParameterRepository<SystemParameter, SystemParameterDetails> repoSp)
+        public UsuarioService(
+            IUsuarioRepository<Usuario> repo, 
+            ISystemParameterRepository<SystemParameter, SystemParameterDetails> repoSp,
+            IMatriculaRepository<Matricula> repoM
+        )
         {
             _userRepo = repo;
             _repoSp = repoSp;
+            _repoM = repoM;
         }
 
         public NewUserDTO Register(UsuarioRegistroDTO register)
@@ -84,9 +90,9 @@ namespace Application.Services
 
         public List<NewUserDTO> ObtenerEstudiantesPorCurso(long cursoId)
         {
-           long DOCENTE_TYPE_ID = 10;
+           long ESTUDIANTE_TYPE_ID = 10;
            return _userRepo
-                .ObtenerPorCursoId(cursoId, DOCENTE_TYPE_ID)
+                .ObtenerPorCursoId(cursoId, ESTUDIANTE_TYPE_ID)
                 .Select(u => new NewUserDTO()
                 {
                     Id = u.Id,
@@ -97,15 +103,17 @@ namespace Application.Services
                     Phone = u.Phone,
                     Adress = u.Adress,
                     RoleId = u.RoleId,
+                    StatusMatricula = _repoM.ObtenerPorUsuarioAndCourse(u.Id, cursoId).StatusApprove,
+                    MatriculaId = _repoM.ObtenerPorUsuarioAndCourse(u.Id, cursoId).Id,
                     RoleName = _repoSp.GetById(1).Details.Where(x => x.Id == u.RoleId).FirstOrDefault().Value ?? ""
                 }).ToList();
         }
 
         public List<NewUserDTO> ObtenerDocentesPorCurso(long cursoId)
         {
-            long ESTUDIANTE_TYPE_ID = 10;
+            long DOCENTE_TYPE_ID = 9;
             return _userRepo
-                 .ObtenerPorCursoId(cursoId, ESTUDIANTE_TYPE_ID)
+                 .ObtenerPorCursoId(cursoId, DOCENTE_TYPE_ID)
                  .Select(u => new NewUserDTO()
                  {
                      Id = u.Id,

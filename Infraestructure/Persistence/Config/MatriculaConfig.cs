@@ -20,6 +20,7 @@ namespace Infraestructure.Persistence.Config
             builder.Property(x => x.UserId).IsRequired();
             builder.Property(x => x.TypeId).IsRequired();
             builder.Property(x => x.CreationTime).IsRequired();
+            builder.Property(x => x.StatusApprove).IsRequired(false);
 
             builder.HasKey(x => x.Id);
         }

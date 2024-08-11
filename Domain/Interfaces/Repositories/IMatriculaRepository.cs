@@ -10,6 +10,7 @@ namespace Domain.Interfaces.Repositories
     {
         IEnumerable<T> ObtenerPorUsuario(long userId);
         IEnumerable<T> ObtenerPorTipo(long typeId);
+        T ObtenerPorUsuarioAndCourse(long userId, long courseId);
         IEnumerable<T> ObtenerPorCurso(long cursoId);
     }
 }

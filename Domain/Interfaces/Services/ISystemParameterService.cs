@@ -11,5 +11,7 @@ namespace Domain.Interfaces.Services
         List<T> ObtenerTodos();
         T ObtenerPorId(long id);
         T Register(T entity);
+        List<T> ObtenerDropDownsPorEstudiante(long idUser, long idCurso);
+
     }
 }

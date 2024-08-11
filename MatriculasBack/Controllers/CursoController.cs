@@ -21,8 +21,26 @@ namespace MatriculasBack.Controllers
             _cursoServ = cursoServ;
         }
 
-        // GET api/curso/todos
-        [HttpGet("todos")]
+        [HttpGet("{id}")]
+        //[Authorize(Policy = "SecretaryOnly")]
+        [Authorize(Policy = "DocenteOnly")]
+        public ApiResponse<CursoDTO> GetById(long id)
+        {
+            try
+            {
+                var res = _cursoServ.ObtenerDto(id);
+
+                return ApiResponse<CursoDTO>.SuccessResponse(res);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<CursoDTO>.ErrorResponse(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+
+    // GET api/curso/todos
+    [HttpGet("todos")]
         //[Authorize(Policy = "SecretaryOnly")]
         [Authorize(Policy = "AdminOnly")]
         public ApiResponse<List<Curso>> GetAll()

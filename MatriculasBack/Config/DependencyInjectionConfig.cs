@@ -25,6 +25,7 @@ namespace MatriculasBack.Config
             services.AddScoped<CursoService>();
             services.AddScoped<MatriculaService>();
             services.AddScoped<SystemParameterService>();
+            services.AddScoped<CalificacionService>();
 
             // implement services
             services.AddScoped<IUsuarioService<NewUserDTO, UsuarioRegistroDTO, UpdateUser>, UsuarioService>();
@@ -32,6 +33,7 @@ namespace MatriculasBack.Config
             services.AddScoped<ICursoService<Curso, NewCursoDTO, UpdateCursoDTO, CursoDTO>, CursoService>();
             services.AddScoped<IMatriculaService<Matricula, NewMatriculaDTO, Matricula, MatriculaDTO>, MatriculaService>();
             services.AddScoped<ISystemParameterService<SystemParameter, SystemParameterDetails>, SystemParameterService>();
+            services.AddScoped<ICalificacionService<CalificacionDTO, NewCalificacionDTO>, CalificacionService>();
 
             // add repos
             services.AddScoped<UsuarioRepository>();
@@ -39,6 +41,7 @@ namespace MatriculasBack.Config
             services.AddScoped<CursoRepository>();
             services.AddScoped<MatriculaRepository>();
             services.AddScoped<SystemParameterRepository>();
+            services.AddScoped<CalificacionRepository>();
 
             // implement repos
             services.AddScoped<IUsuarioRepository<Usuario>, UsuarioRepository>();
@@ -46,6 +49,7 @@ namespace MatriculasBack.Config
             services.AddScoped<ICursoRepository<Curso, CursoDTO>, CursoRepository>();
             services.AddScoped<IMatriculaRepository<Matricula>, MatriculaRepository>();
             services.AddScoped<ISystemParameterRepository<SystemParameter, SystemParameterDetails>, SystemParameterRepository>();
+            services.AddScoped<ICalificacionRepository<Calificacion, NewCalificacionDTO>, CalificacionRepository>();
 
             // add cors
             services.AddCors(options =>

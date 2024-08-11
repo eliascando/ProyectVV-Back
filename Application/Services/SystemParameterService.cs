@@ -13,6 +13,11 @@ namespace Application.Services
             _repo = repo;
         }
 
+        public List<SystemParameter> ObtenerDropDownsPorEstudiante(long idUser, long idCurso)
+        {
+            return _repo.ObtenerDropDownsPorEstudiante(idUser, idCurso);
+        }
+
         public SystemParameter ObtenerPorId(long id)
         {
             return _repo.GetById(id);

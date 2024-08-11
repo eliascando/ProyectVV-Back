@@ -93,7 +93,21 @@ namespace Infraestructure.Persistence.Repositories
 
         public Matricula Update(long id, Matricula entity)
         {
-            throw new NotImplementedException();
+            var m = _context.Matriculas.FirstOrDefault(x => x.Id == id);
+
+            if (m == null) throw new Exception("No se encontró matrícula");
+
+            m.StatusApprove = entity.StatusApprove;
+
+            _context.Matriculas.Update(m);
+            _context.SaveChanges();
+
+            return entity;
+        }
+
+        public Matricula ObtenerPorUsuarioAndCourse(long userId, long courseId)
+        {
+            return _context.Matriculas.Where(x => x.UserId == userId && x.CourseId == courseId && x.Status == true).FirstOrDefault() ?? throw new Exception("No se encuentra matricula");
         }
     }
 }

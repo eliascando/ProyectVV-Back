@@ -118,5 +118,27 @@ namespace Infraestructure.Persistence.Repositories
 
             return cursos;
         }
+
+        public CursoDTO ObtenerDto(long id)
+        {
+            // matricula tipo estudiante
+            long MATRICULA_ESTUDIANTE_ID = 10;
+
+            var curso = _context.Cursos.Where(c => c.Status && c.Id == id).Select(
+                    c => new CursoDTO
+                    {
+                        Cycle = _context.SystemParametersDetails.Where(sp => sp.Id == c.CycleId).Select(c => c.Description).FirstOrDefault() ?? "",
+                        Hours = c.Hours,
+                        Description = c.Description,
+                        Id = c.Id,
+                        Status = c.Status,
+                        Parallel = c.Parallel,
+                        Price = c.Price,
+                        StudentsRegistered = _context.Matriculas.Where(m => (m.CourseId == c.Id) && m.Status && m.TypeId == MATRICULA_ESTUDIANTE_ID).Count()
+                    }
+                ).FirstOrDefault() ?? throw new Exception("No se ha encontrado curso!");
+
+            return curso;
+        }
     }
 }

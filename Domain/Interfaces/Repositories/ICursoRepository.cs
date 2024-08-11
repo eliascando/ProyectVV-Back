@@ -10,6 +10,7 @@ namespace Domain.Interfaces.Repositories
     public interface ICursoRepository<T, TDTO> : IRepositoryBase<T>
     {
         List<TDTO> ObtenerCursosDto();
+        TDTO ObtenerDto(long id);
         List<TDTO> ObtenerCursosPorDocente(long id);
     }
 }

@@ -6,5 +6,6 @@
         T GetById(long id);
         TDetails GetByDetailId(long id);
         T RegisterNew(T entity);
+        List<T> ObtenerDropDownsPorEstudiante(long idUser, long idCurso);
     }
 }
